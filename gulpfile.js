@@ -57,5 +57,5 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', function(callback) {
-  runSequence('clean', 'bower', 'html', 'jsx', 'connect', 'open', 'watch', callback);
+  runSequence('clean', ['bower', 'html', 'jsx'], 'connect', 'open', 'watch', callback);
 });
