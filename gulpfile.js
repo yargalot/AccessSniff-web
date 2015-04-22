@@ -9,6 +9,13 @@ var notify = require('gulp-notify');
 var connect = require('gulp-connect');
 var runSequence = require('run-sequence');
 
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+
+
+var browserify = require('browserify');
+var reactify = require('reactify');
+
 gulp.task('clean', function(cb) {
   del(['./dist'], cb);
 });
@@ -27,10 +34,23 @@ gulp.task('less', function () {
 });
 
 gulp.task('jsx', function () {
-  gulp.src('src/js/*.jsx')
-    .pipe(react())
-    .pipe(gulp.dest('dist/js'))
-    .pipe(connect.reload());
+  // set up the browserify instance on a task basis
+  var b = browserify({
+    entries: './src/js/template.jsx',
+    debug: true,
+    // defining transforms here will avoid crashing your stream
+    transform: [reactify]
+  });
+
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    // .pipe(sourcemaps.init({loadMaps: true}))
+    //     // Add transformation tasks to the pipeline here.
+    //     .pipe(uglify())
+    //     .on('error', gutil.log)
+    // .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./dist/js/'));
 });
 
 gulp.task('connect', function() {
