@@ -5,6 +5,7 @@ var open = require('gulp-open');
 var less = require('gulp-less');
 var react = require('gulp-react');
 var bower = require('gulp-bower');
+var notify = require('gulp-notify');
 var connect = require('gulp-connect');
 var runSequence = require('run-sequence');
 
@@ -14,7 +15,7 @@ gulp.task('clean', function(cb) {
 
 gulp.task('bower', function() {
   return bower()
-    .pipe(gulp.dest('dist/lib/'))
+    .pipe(gulp.dest('dist/lib/'));
 });
 
 gulp.task('less', function () {
@@ -49,7 +50,8 @@ gulp.task('open', function(){
   gulp.src('./dist/index.html')
     .pipe(open('', {
       url: 'http://localhost:8080'
-    }));
+    }))
+    .pipe(notify('Server started!'));
 });
 
 gulp.task('watch', function () {
