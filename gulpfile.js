@@ -28,7 +28,8 @@ gulp.task('less', function () {
 gulp.task('jsx', function () {
   gulp.src('src/js/*.jsx')
     .pipe(react())
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('dist/js'))
+    .pipe(connect.reload());
 });
 
 gulp.task('connect', function() {
